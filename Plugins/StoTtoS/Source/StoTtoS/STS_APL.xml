@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    ! Created by trurtrl !
+-->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+  <init>
+    <log text="SpeechToTextToSpeech init"/>
+  </init>
+
+  <proguardAdditions>
+    <insert>
+     
+    </insert>
+  </proguardAdditions>
+
+  <prebuildCopies>
+      <copyDir src="$S(PluginDir)/Java" dst="$S(BuildDir)" />
+  </prebuildCopies>
+
+  <gameActivityImportAdditions>
+    <insert>
+     <!--Inject imports here-->
+      import android.Manifest;
+      import android.content.Intent;
+      import android.content.pm.PackageManager;
+      import android.os.Build;
+      import android.speech.RecognitionListener;
+      import android.speech.RecognizerIntent;
+      import android.speech.SpeechRecognizer;
+      import android.speech.tts.TextToSpeech;
+      import android.support.annotation.NonNull;
+
+      import android.os.Bundle;
+//      import android.util.Log;
+      import android.view.MotionEvent;
+      import android.view.View;
+
+      import java.util.ArrayList;
+      import java.util.Locale;
+
+    </insert>
+  </gameActivityImportAdditions>
+
+  <androidManifestUpdates>
+    
+    <!--Permissions for record audio-->
+    <addPermission android:name="android.permission.RECORD_AUDIO" />
+     
+  </androidManifestUpdates>
+  
+  <!--
+  ####################### Activity/App lifecycle callbacks ######################
+  -->
+  <!--
+  # optional additions to GameActivity onCreate in GameActivity.java 
+  -->
+	<gameActivityOnCreateAdditions>
+     <insert>
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int ttsLang = textToSpeech.setLanguage(Locale.US);
+                }
+            };
+        });
+     </insert>
+  </gameActivityOnCreateAdditions>
+  
+  
+ 
+   <!-- optional additions to GameActivity onDestroy in GameActivity.java -->
+	 <gameActivityOnDestroyAdditions>
+     <insert>
+
+     </insert>
+   </gameActivityOnDestroyAdditions>
+	 	
+	 <!-- optional additions to GameActivity onStart in GameActivity.java -->
+	 <gameActivityOnStartAdditions></gameActivityOnStartAdditions>
+	 	
+	 <!-- optional additions to GameActivity onStop in GameActivity.java -->
+	 <gameActivityOnStopAdditions>
+        <insert>
+
+        </insert>
+   </gameActivityOnStopAdditions>
+	 	
+	 <!-- optional additions to GameActivity onPause in GameActivity.java -->
+	 <gameActivityOnPauseAdditions>
+     <insert>
+
+     </insert>
+     
+   </gameActivityOnPauseAdditions>
+	  	
+	 <!-- optional additions to GameActivity onResume in GameActivity.java -->
+	 <gameActivityOnResumeAdditions></gameActivityOnResumeAdditions>
+
+  
+    <!--
+    # Methods, inner classes, and other the other additions
+    --> 
+  <gameActivityClassAdditions>
+    <insert>
+      //  variables
+      private TextToSpeech textToSpeech;
+      private SpeechRecognizer mSpeechRecognizer;
+      private Intent mSpeechRecognizerIntent;
+
+      // callbacks to C++
+      private static native void handleRecordedSpeech(String phrase);
+
+
+      
+      void Pronounce(String text) {
+          textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+      }
+
+      void StartListening() {
+          mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
+      }
+      
+      void StopListening() {
+          mSpeechRecognizer.stopListening();
+      }
+
+    private void startSpeechRecognizer() {
+        mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
+                Locale.US);
+
+        mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getApplicationContext());
+
+        mSpeechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onError(int i) {
+
+            }
+
+            @Override
+            public void onResults(Bundle bundle) {
+                //getting all the matches
+                ArrayList&lt;String&gt; matches = bundle
+                        .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+
+                //displaying the first match
+                if (matches != null)
+                    handleRecordedSpeech(matches.get(0));
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+
+            }
+        });
+    }
+
+    </insert>
+  </gameActivityClassAdditions>
+
+
+
+
+</root>
+

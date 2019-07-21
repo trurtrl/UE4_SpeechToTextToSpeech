@@ -1,6 +1,7 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
+using System.IO;
 
 public class StoTtoS : ModuleRules
 {
@@ -18,7 +19,8 @@ public class StoTtoS : ModuleRules
 		PrivateIncludePaths.AddRange(
 			new string[] {
 				// ... add other private include paths required here ...
-			}
+                "StoTtoS/Private",
+            }
 			);
 			
 		
@@ -27,7 +29,8 @@ public class StoTtoS : ModuleRules
 			{
 				"Core",
 				// ... add other public dependencies that you statically link with here ...
-			}
+                "AndroidPermission",
+            }
 			);
 			
 		
@@ -36,8 +39,8 @@ public class StoTtoS : ModuleRules
 			{
 				"CoreUObject",
 				"Engine",
-				"Slate",
-				"SlateCore",
+				//"Slate",
+				//"SlateCore",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
@@ -49,5 +52,17 @@ public class StoTtoS : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
-	}
+
+
+        // For Android
+        if (Target.Platform == UnrealTargetPlatform.Android)
+        {
+            PrivateIncludePaths.Add("StoTtoS/Private");
+
+            PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
+
+            string PluginRelativePath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
+            AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginRelativePath, "STS_APL.xml"));
+        }
+    }
 }

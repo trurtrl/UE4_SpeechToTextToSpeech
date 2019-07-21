@@ -1,23 +1,30 @@
 {
-	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "1.0",
-	"FriendlyName": "StoTtoS",
-	"Description": "",
-	"Category": "Other",
-	"CreatedBy": "",
-	"CreatedByURL": "",
-	"DocsURL": "",
-	"MarketplaceURL": "",
-	"SupportURL": "",
-	"CanContainContent": true,
-	"IsBetaVersion": false,
-	"Installed": false,
-	"Modules": [
-		{
-			"Name": "StoTtoS",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		}
-	]
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0",
+    "FriendlyName": "SpeechToTextToSpeech",
+    "Description": "Pronounces a written text and returns a string of a recorded (listened) phrase",
+    "Category": "Other",
+    "CreatedBy": "trurtrl",
+    "CreatedByURL": "",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "CanContainContent": true,
+    "IsBetaVersion": false,
+    "Installed": true,
+    "Modules": [
+        {
+            "Name": "StoTtoS",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "WhitelistPlatforms": [ "Android" ]
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "AndroidPermission",
+            "Enabled": true
+        }
+    ]
 }

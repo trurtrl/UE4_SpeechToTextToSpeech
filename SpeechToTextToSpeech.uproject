@@ -7,7 +7,17 @@
 		{
 			"Name": "SpeechToTextToSpeech",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"UMG"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "StoTtoS",
+			"Enabled": true
 		}
 	]
 }

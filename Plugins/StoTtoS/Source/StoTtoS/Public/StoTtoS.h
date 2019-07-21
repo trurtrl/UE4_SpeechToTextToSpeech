@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
+#include "STSInterface.h"
 
-class FStoTtoSModule : public IModuleInterface
+class FStoTtoSModule : public FSTSInterface
 {
 public:
 
