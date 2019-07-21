@@ -126,12 +126,13 @@ void UAndroidGateway::OnRecordPermissionGrantedHandle(const TArray<FString>& Per
 
 void UAndroidGateway::StartListeningOnAndroid()
 {
+	FRecordPhraseReceiver::GetInstance()->OnRecordPhraseRecive = OnRecordPhraseDelegate;
+
 #if PLATFORM_ANDROID
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, UAndroidGateway::StartListeningMethod);
 
-		FRecordPhraseReceiver::GetInstance()->OnRecordPhraseRecive = OnRecordPhraseDelegate;
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, UAndroidGateway::StartListeningMethod);
 	}
 #endif
 }

@@ -105,7 +105,7 @@
     <insert>
       //  variables
       private TextToSpeech textToSpeech;
-      private SpeechRecognizer mSpeechRecognizer;
+      private SpeechRecognizer mSpeechRecognizer = null;
       private Intent mSpeechRecognizerIntent;
 
       // callbacks to C++
@@ -118,11 +118,35 @@
       }
 
       void StartListening() {
-          mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
+         try {
+            _activity.runOnUiThread(new Runnable() {
+				        @Override
+				        public void run() {
+					          if (mSpeechRecognizer == null || mSpeechRecognizerIntent == null) {
+						          startSpeechRecognizer();
+					          }
+					          if (mSpeechRecognizer != null) {
+						          mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
+					          }
+				        }
+			      });
+         } catch (Exception e) {
+         }
       }
       
       void StopListening() {
-          mSpeechRecognizer.stopListening();
+        try {
+            _activity.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run() {
+                    if (mSpeechRecognizer != null) {
+                        mSpeechRecognizer.stopListening();
+                    }
+                }
+            });
+         } catch (Exception e) {
+         }
       }
 
     private void startSpeechRecognizer() {
@@ -132,7 +156,7 @@
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
                 Locale.US);
 
-        mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getApplicationContext());
+        mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(Get().getApplicationContext());
 
         mSpeechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override

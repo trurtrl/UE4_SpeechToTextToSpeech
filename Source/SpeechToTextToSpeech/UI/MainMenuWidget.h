@@ -41,10 +41,28 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* m_TextOutput;
 
+	UPROPERTY(EditDefaultsOnly, meta = (DysplayName = "Record Button Unpressed"), Category = "Color Setup")
+	FLinearColor m_ColorUnpressed;
+
+	UPROPERTY(EditDefaultsOnly, meta = (DysplayName = "Record Button Pressed"), Category = "Color Setup")
+	FLinearColor m_ColorPressed;
+
 
 	UPROPERTY()
 	UAndroidGateway* m_AndroidGateway;
 
 	UFUNCTION()
 	void ButtonPronounceReleasedHandle();
+
+	UFUNCTION()
+	void ButtonRecordPressedHandle();
+
+	UFUNCTION()
+	void ButtonRecordReleasedHandle();
+
+	UFUNCTION()
+	void OnRecordPhraseDelegateHandle(const FString& Phrase);
+
+	bool b_InRecord;
+
 };
